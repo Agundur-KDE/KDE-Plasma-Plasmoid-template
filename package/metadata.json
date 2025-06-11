@@ -1,0 +1,24 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Name": "KDE-Template",
+        "Id": "de.agundur.kdetemplate",
+        "Description": "A skeleton of files to get you started building a Plasmoid",
+        "Category": "Status Information",
+        "Icon": "kdesrc-build",
+        "Authors": [
+            {
+                "Email": "info@agundur.de",
+                "Name": "Alec"
+            }
+        ],
+        "Version": "0.1",
+        "License": "GPL",
+        "Website": "https://www.agundur.de",
+        "BugReportUrl": "info@agundur.de"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-KDE-PluginInfo-Name": "de.agundur.kdetemplate",
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml"
+}
