@@ -13,9 +13,6 @@
   <img src="https://img.shields.io/badge/donate-PayPal-%2337a556" alt="PayPal">
 </a>
 
-
-  
-  <script src="https://liberapay.com/Agundur/widgets/button.js"></script>
 <noscript><a href="https://liberapay.com/Agundur/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
 </a></div>
 
