@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31)
-project(osbmonitor)
+project(myplasmoid)
 
 set(QT_MIN_VERSION "6.7.0")
 set(KF6_MIN_VERSION "6.10.0")
@@ -28,7 +28,17 @@ if (Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
     find_package(Qt6GuiPrivate ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 endif()
 
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
+    Config
+    I18n
+    KCMUtils
+)
 
-set(PLASMOID_ID de.agundur.osbmonitor)
 
-install(DIRECTORY package/ DESTINATION ${KDE_INSTALL_DATADIR}/plasma/plasmoids/de.agundur.osbmonitor)
+ki18n_install(translate
+    INSTALL_DESTINATION ${KDE_INSTALL_LOCALEDIR}
+)
+
+add_subdirectory(package)
+
+install(DIRECTORY package/ DESTINATION ${KDE_INSTALL_DATADIR}/plasma/plasmoids/de.agundur.myplasmoid)
