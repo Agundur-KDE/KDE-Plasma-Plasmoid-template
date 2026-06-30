@@ -44,10 +44,14 @@ read -rp "Continue? [y/N] " CONFIRM
 
 FILES=$(git ls-files | grep -E '\.(txt|json|qml|h|cpp|xml|md|sh|po|py)$')
 
+# Escape dots for sed (. is a regex wildcard)
+OLD_DOMAIN_ESC="${OLD_DOMAIN//./\\.}"
+OLD_PLUGIN_ESC="${OLD_PLUGIN//./\\.}"
+
 for f in $FILES; do
     sed -i \
-        -e "s|${OLD_DOMAIN}|${NEW_DOMAIN}|g" \
-        -e "s|${OLD_PLUGIN}|${NEW_PLUGIN}|g" \
+        -e "s|${OLD_DOMAIN_ESC}|${NEW_DOMAIN}|g" \
+        -e "s|${OLD_PLUGIN_ESC}|${NEW_PLUGIN}|g" \
         -e "s|${OLD_ID}|${NEW_ID}|g" \
         -e "s|${OLD_NAME}|${NEW_NAME}|g" \
         "$f"
@@ -70,11 +74,14 @@ PYEOF
 
 # ── Rename .po files ──────────────────────────────────────────────────────────
 
+# Rename .po files — filename pattern must stay plasma_applet_<plugin-id>.po
 find translate -name "plasma_applet_${OLD_DOMAIN}.po" | while read -r po; do
-    new_po="${po/${OLD_DOMAIN}/${NEW_DOMAIN}}"
+    dir=$(dirname "$po")
+    lang=$(basename "$dir")
+    new_po="${dir}/plasma_applet_${NEW_DOMAIN}.po"
     mv "$po" "$new_po"
-    # update the po header too
-    sed -i "s|${OLD_DOMAIN}|${NEW_DOMAIN}|g" "$new_po"
+    # fix Project-Id-Version header (use fixed-string replacement, not regex)
+    sed -i "s|Project-Id-Version: plasma_applet_${OLD_DOMAIN_ESC}|Project-Id-Version: plasma_applet_${NEW_DOMAIN}|" "$new_po"
 done
 
 echo ""
