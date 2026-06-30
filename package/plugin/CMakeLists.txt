@@ -1,20 +1,17 @@
-find_package(Qt6 REQUIRED COMPONENTS Core Quick)
+find_package(Qt6 REQUIRED COMPONENTS Core Qml)
 
-qt_add_qml_module(myplasmoidplugin
+include(ECMQmlModule)
+
+ecm_add_qml_module(myplasmoidplugin
     URI de.agundur.myplasmoid
     VERSION 1.0
-    SOURCES
-        FileReader.cpp FileReader.h
-    NO_PLUGIN_OPTIONAL
+    GENERATE_PLUGIN_SOURCE
 )
 
-target_link_libraries(myplasmoidplugin PRIVATE Qt6::Core Qt6::Quick)
+target_sources(myplasmoidplugin PRIVATE
+    FileReader.cpp FileReader.h
+)
 
-install(TARGETS myplasmoidplugin
-    LIBRARY DESTINATION ${KDE_INSTALL_QMLDIR}/de/agundur/myplasmoid
-)
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/de/agundur/myplasmoid/qmldir
-    ${CMAKE_CURRENT_BINARY_DIR}/de/agundur/myplasmoid/myplasmoidplugin.qmltypes
-    DESTINATION ${KDE_INSTALL_QMLDIR}/de/agundur/myplasmoid
-)
+target_link_libraries(myplasmoidplugin PRIVATE Qt6::Core Qt6::Qml)
+
+ecm_finalize_qml_module(myplasmoidplugin)
