@@ -17,6 +17,7 @@ include(ECMFindQmlModule)
 include(ECMAddTests)
 
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+    Core
     Quick
     Test
     QuickTest
