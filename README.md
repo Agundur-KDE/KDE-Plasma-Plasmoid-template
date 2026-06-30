@@ -64,6 +64,17 @@ ctest --output-on-failure
 
 Tests live in `tests/tst_plasmoid.qml`. Add `TestCase { }` blocks there as your plasmoid grows.
 
+## Rename for your project
+
+After cloning, run the interactive rename script once:
+
+```bash
+bash rename.sh
+```
+
+It replaces all occurrences of `de.agundur.myplasmoid` / `myplasmoid` / `KDE-Template`,
+renames the `.po` translation files, and updates `metadata.json` (name, description, author, URLs).
+
 ## Quick install without CMake (for development)
 
 ```bash
