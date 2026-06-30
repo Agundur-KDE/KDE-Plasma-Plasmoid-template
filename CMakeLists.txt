@@ -31,6 +31,11 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
 
 enable_testing()
 
+add_test(NAME validate-metadata
+    COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/validate-metadata.py
+                    ${CMAKE_SOURCE_DIR}/package/metadata.json
+)
+
 ki18n_install(translate
     INSTALL_DESTINATION ${KDE_INSTALL_LOCALEDIR}
 )
