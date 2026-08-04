@@ -42,7 +42,7 @@ read -rp "Continue? [y/N] " CONFIRM
 
 # ── Replace in files ──────────────────────────────────────────────────────────
 
-FILES=$(git ls-files | grep -E '\.(txt|json|qml|h|cpp|xml|md|sh|po|py)$')
+FILES=$(git ls-files | grep -E '\.(txt|json|qml|h|cpp|xml|md|sh|po|py)$' | grep -v '^rename\.sh$')
 
 # Escape dots for sed (. is a regex wildcard)
 OLD_DOMAIN_ESC="${OLD_DOMAIN//./\\.}"
@@ -87,6 +87,6 @@ done
 echo ""
 echo "Done. Next steps:"
 echo "  1. git remote set-url origin <your-repo-url>"
-echo "  2. mkdir build && cd build && cmake .. && make"
-echo "  3. sudo make install"
-echo "  4. plasmoidviewer -a ${NEW_DOMAIN}"
+echo "  2. mkdir build && cd build && cmake .. && make   (only needed for the C++ plugin)"
+echo "  3. plasmoidviewer -a package   (reads the source folder directly, no install needed"
+echo "                                  — install only when you need a real desktop/panel placement)"

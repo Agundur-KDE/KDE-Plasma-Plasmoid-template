@@ -44,7 +44,12 @@ ki18n_install(translate
 add_subdirectory(package)
 add_subdirectory(tests)
 
-install(
-    DIRECTORY package/
-    DESTINATION ${KDE_INSTALL_DATADIR}/plasma/plasmoids/de.agundur.myplasmoid
-)
+# Only ship metadata.json + contents/ (QML, config, translations) — a blanket
+# install(DIRECTORY package/) would also ship plugin/*.cpp,h,CMakeLists.txt
+# as inert data files next to the actually-used compiled plugin, which
+# ecm_add_qml_module already installs separately into the Qt QML plugin dir.
+install(FILES package/metadata.json
+        DESTINATION ${KDE_INSTALL_DATADIR}/plasma/plasmoids/de.agundur.myplasmoid)
+
+install(DIRECTORY package/contents/
+        DESTINATION ${KDE_INSTALL_DATADIR}/plasma/plasmoids/de.agundur.myplasmoid/contents)

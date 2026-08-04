@@ -75,20 +75,25 @@ bash rename.sh
 It replaces all occurrences of `de.agundur.myplasmoid` / `myplasmoid` / `KDE-Template`,
 renames the `.po` translation files, and updates `metadata.json` (name, description, author, URLs).
 
-## Quick install without CMake (for development)
+## Quick iteration without installing (for development)
+
+`plasmoidviewer` can load a package straight from its source folder — no
+`kpackagetool6 --install` / `sudo make install` round-trip needed while
+you're just iterating on QML:
 
 ```bash
-kpackagetool6 --install package/
-# reload with:
-plasmoidviewer -a de.agundur.myplasmoid
-# or on Wayland:
-QT_QPA_PLATFORM=xcb plasmoidviewer -a de.agundur.myplasmoid
+plasmoidviewer -a package/
 ```
+
+Edits to QML/config files apply on the next restart of `plasmoidviewer`.
+Only install for real (`kpackagetool6 --install package/`, or `sudo make
+install` for the compiled plugin) once you need a real desktop/panel
+placement or system icon-theme resolution.
 
 ## Customising
 
 1. **Rename** — find/replace `de.agundur.myplasmoid` and `myplasmoid` in `CMakeLists.txt` and `package/metadata.json`
-2. **UI** — edit `package/contents/ui/FullRepresentation.qml` for the popup content
+2. **UI** — edit `fullRepresentation`/`compactRepresentation` in `package/contents/ui/main.qml` for the popup content. Keep them inline there rather than splitting into separate files — QML ids (like `root`) aren't visible across files, so a separate file can't reach back into `main.qml`'s state.
 3. **Settings** — add entries to `package/contents/config/main.xml` and a matching field in `configNetwork.qml`
 4. **C++ plugin** — uncomment `add_subdirectory(plugin)` in `package/CMakeLists.txt` and add your plugin there
 
