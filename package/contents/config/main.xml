@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kcfg xmlns="http://www.kde.org/standards/kcfg/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
     <kcfgfile name=""/>
-    <group name="Network">
-        <entry name="Host" type="String">
-            <default>127.0.0.1</default>
+    <group name="General">
+        <entry name="Greeting" type="String">
+            <default>Hello from config!</default>
         </entry>
     </group>
 </kcfg>

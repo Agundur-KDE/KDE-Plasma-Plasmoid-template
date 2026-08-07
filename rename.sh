@@ -42,33 +42,34 @@ read -rp "Continue? [y/N] " CONFIRM
 
 # ── Replace in files ──────────────────────────────────────────────────────────
 
-FILES=$(git ls-files | grep -E '\.(txt|json|qml|h|cpp|xml|md|sh|po|py)$' | grep -v '^rename\.sh$')
-
 # Escape dots for sed (. is a regex wildcard)
 OLD_DOMAIN_ESC="${OLD_DOMAIN//./\\.}"
 OLD_PLUGIN_ESC="${OLD_PLUGIN//./\\.}"
 
-for f in $FILES; do
+# Null-delimited so filenames with spaces/special chars can't break the loop.
+while IFS= read -r -d '' f; do
+    [[ "$f" == "rename.sh" ]] && continue
     sed -i \
         -e "s|${OLD_DOMAIN_ESC}|${NEW_DOMAIN}|g" \
         -e "s|${OLD_PLUGIN_ESC}|${NEW_PLUGIN}|g" \
         -e "s|${OLD_ID}|${NEW_ID}|g" \
         -e "s|${OLD_NAME}|${NEW_NAME}|g" \
         "$f"
-done
+done < <(git ls-files -z | grep -zE '\.(txt|json|qml|h|cpp|xml|md|sh|po|py)$')
 
 # ── Update metadata.json fields ───────────────────────────────────────────────
 
-python3 - <<PYEOF
-import json, pathlib
+NEW_NAME="$NEW_NAME" NEW_DESC="$NEW_DESC" AUTHOR_NAME="$AUTHOR_NAME" \
+AUTHOR_EMAIL="$AUTHOR_EMAIL" GITHUB_URL="$GITHUB_URL" python3 <<'PYEOF'
+import json, os, pathlib
 
 p = pathlib.Path("package/metadata.json")
 m = json.loads(p.read_text())
-m["KPlugin"]["Name"]         = "${NEW_NAME}"
-m["KPlugin"]["Description"]  = "${NEW_DESC}"
-m["KPlugin"]["Authors"]      = [{"Name": "${AUTHOR_NAME}", "Email": "${AUTHOR_EMAIL}"}]
-m["KPlugin"]["Website"]      = "${GITHUB_URL}"
-m["KPlugin"]["BugReportUrl"] = "${GITHUB_URL}/issues"
+m["KPlugin"]["Name"]         = os.environ["NEW_NAME"]
+m["KPlugin"]["Description"]  = os.environ["NEW_DESC"]
+m["KPlugin"]["Authors"]      = [{"Name": os.environ["AUTHOR_NAME"], "Email": os.environ["AUTHOR_EMAIL"]}]
+m["KPlugin"]["Website"]      = os.environ["GITHUB_URL"]
+m["KPlugin"]["BugReportUrl"] = os.environ["GITHUB_URL"] + "/issues"
 p.write_text(json.dumps(m, indent=4) + "\n")
 PYEOF
 

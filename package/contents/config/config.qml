@@ -10,9 +10,9 @@ import org.kde.plasma.configuration 2.0
 
 ConfigModel {
     ConfigCategory {
-        name: i18nc("@title", "Network")
-        icon: "network-wireless"
-        source: "configNetwork.qml"
+        name: i18nc("@title", "General")
+        icon: "preferences-general"
+        source: "configGeneral.qml"
     }
 
 }

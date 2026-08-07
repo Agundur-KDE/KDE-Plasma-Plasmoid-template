@@ -4,7 +4,6 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasmoid
-import de.agundur.myplasmoid
 
 PlasmoidItem {
     // fullRepresentation/compactRepresentation stay INLINE in this file
@@ -39,12 +38,6 @@ PlasmoidItem {
         anchors.margins: Kirigami.Units.largeSpacing
         spacing: Kirigami.Units.largeSpacing
 
-        // FileReader watches the file and updates automatically on change.
-        FileReader {
-            id: reader
-            path: Plasmoid.configuration.Host  // replace with your actual file path
-        }
-
         PlasmaComponents.Label {
             text: i18n("FullRepresentation.qml — root.exampleCounter: %1", root.exampleCounter)
             horizontalAlignment: Text.AlignHCenter
@@ -53,8 +46,10 @@ PlasmoidItem {
             wrapMode: Text.Wrap
         }
 
+        // Config values are already reactive — no watcher/plugin needed to
+        // pick up changes made in the config dialog.
         PlasmaComponents.Label {
-            text: reader.content || i18n("(no file loaded)")
+            text: Plasmoid.configuration.Greeting
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             font.pixelSize: Kirigami.Theme.defaultFont.pointSize
@@ -62,9 +57,9 @@ PlasmoidItem {
         }
 
         PlasmaComponents.Button {
-            text: i18n("Reload")
+            text: i18n("Increment")
             Layout.alignment: Qt.AlignHCenter
-            onClicked: reader.reload()
+            onClicked: root.exampleCounter++
         }
     }
 
