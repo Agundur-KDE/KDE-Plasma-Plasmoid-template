@@ -6,11 +6,34 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_de.agundur.myplasmoid\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"POT-Creation-Date: 2026-08-07 13:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE\n"
-"Language: LANG\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: package/contents/ui/configGeneral.qml:19
+msgctxt "@label:textbox"
+msgid "Greeting:"
+msgstr ""
+
+#: package/contents/ui/main.qml:30
+msgid "myplasmoid"
+msgstr ""
+
+#: package/contents/ui/main.qml:42
+msgid "FullRepresentation.qml — root.exampleCounter: %1"
+msgstr ""
+
+#: package/contents/ui/main.qml:60
+msgid "Increment"
+msgstr ""
+
+#: package/contents/config/config.qml:13
+msgctxt "@title"
+msgid "General"
+msgstr ""

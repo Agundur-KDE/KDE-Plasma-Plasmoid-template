@@ -27,10 +27,17 @@ if [[ ! "$NEW_ID" =~ ^[a-z][a-z0-9-]*$ ]]; then
     exit 1
 fi
 
+if [[ ! "$GITHUB_ORG" =~ ^[A-Za-z0-9_.-]+$ ]]; then
+    echo "ERROR: GitHub user/org must not contain spaces or slashes." >&2
+    exit 1
+fi
+
 NEW_DOMAIN="de.agundur.${NEW_ID}"
 NEW_PLUGIN="${NEW_ID}plugin"
 OLD_PLUGIN="${OLD_ID}plugin"
-GITHUB_URL="https://github.com/${GITHUB_ORG}/${NEW_NAME// /-}"
+# Repo name is the project ID, not the (possibly multi-word) display name —
+# GitHub repo names are conventionally the slug you'll actually `git clone`.
+GITHUB_URL="https://github.com/${GITHUB_ORG}/${NEW_ID}"
 
 echo "Will rename:"
 echo "  ID:     $OLD_DOMAIN  →  $NEW_DOMAIN"
@@ -42,33 +49,34 @@ read -rp "Continue? [y/N] " CONFIRM
 
 # ── Replace in files ──────────────────────────────────────────────────────────
 
-FILES=$(git ls-files | grep -E '\.(txt|json|qml|h|cpp|xml|md|sh|po|py)$' | grep -v '^rename\.sh$')
-
 # Escape dots for sed (. is a regex wildcard)
 OLD_DOMAIN_ESC="${OLD_DOMAIN//./\\.}"
 OLD_PLUGIN_ESC="${OLD_PLUGIN//./\\.}"
 
-for f in $FILES; do
+# Null-delimited so filenames with spaces/special chars can't break the loop.
+while IFS= read -r -d '' f; do
+    [[ "$f" == "rename.sh" ]] && continue
     sed -i \
         -e "s|${OLD_DOMAIN_ESC}|${NEW_DOMAIN}|g" \
         -e "s|${OLD_PLUGIN_ESC}|${NEW_PLUGIN}|g" \
         -e "s|${OLD_ID}|${NEW_ID}|g" \
         -e "s|${OLD_NAME}|${NEW_NAME}|g" \
         "$f"
-done
+done < <(git ls-files -z | grep -zE '\.(txt|json|qml|h|cpp|xml|md|sh|po|py)$')
 
 # ── Update metadata.json fields ───────────────────────────────────────────────
 
-python3 - <<PYEOF
-import json, pathlib
+NEW_NAME="$NEW_NAME" NEW_DESC="$NEW_DESC" AUTHOR_NAME="$AUTHOR_NAME" \
+AUTHOR_EMAIL="$AUTHOR_EMAIL" GITHUB_URL="$GITHUB_URL" python3 <<'PYEOF'
+import json, os, pathlib
 
 p = pathlib.Path("package/metadata.json")
 m = json.loads(p.read_text())
-m["KPlugin"]["Name"]         = "${NEW_NAME}"
-m["KPlugin"]["Description"]  = "${NEW_DESC}"
-m["KPlugin"]["Authors"]      = [{"Name": "${AUTHOR_NAME}", "Email": "${AUTHOR_EMAIL}"}]
-m["KPlugin"]["Website"]      = "${GITHUB_URL}"
-m["KPlugin"]["BugReportUrl"] = "${GITHUB_URL}/issues"
+m["KPlugin"]["Name"]         = os.environ["NEW_NAME"]
+m["KPlugin"]["Description"]  = os.environ["NEW_DESC"]
+m["KPlugin"]["Authors"]      = [{"Name": os.environ["AUTHOR_NAME"], "Email": os.environ["AUTHOR_EMAIL"]}]
+m["KPlugin"]["Website"]      = os.environ["GITHUB_URL"]
+m["KPlugin"]["BugReportUrl"] = os.environ["GITHUB_URL"] + "/issues"
 p.write_text(json.dumps(m, indent=4) + "\n")
 PYEOF
 
@@ -77,7 +85,6 @@ PYEOF
 # Rename .po files — filename pattern must stay plasma_applet_<plugin-id>.po
 find translate -name "plasma_applet_${OLD_DOMAIN}.po" | while read -r po; do
     dir=$(dirname "$po")
-    lang=$(basename "$dir")
     new_po="${dir}/plasma_applet_${NEW_DOMAIN}.po"
     mv "$po" "$new_po"
     # fix Project-Id-Version header (use fixed-string replacement, not regex)
