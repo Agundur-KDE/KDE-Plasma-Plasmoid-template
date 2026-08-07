@@ -32,3 +32,8 @@ jobs:
         run: |
           sudo apt-get install -y shellcheck
           shellcheck rename.sh
+
+      - name: qmllint
+        run: |
+          QMLLINT="$(command -v qmllint6 || command -v qmllint)"
+          find package/contents -name '*.qml' -print0 | xargs -0 "$QMLLINT"
