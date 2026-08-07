@@ -7,21 +7,16 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-24.04
+    container: opensuse/tumbleweed
     steps:
-      - uses: actions/checkout@v4
-
       - name: Install build dependencies
         run: |
-          # KF6 packages aren't in Ubuntu 24.04's default repos yet — the
-          # Kubuntu backports PPA (the same one the README points Ubuntu
-          # users at) carries them.
-          sudo add-apt-repository -y ppa:kubuntu-ppa/backports
-          sudo apt-get update
-          sudo apt-get install -y \
-            cmake extra-cmake-modules \
-            qt6-base-dev qt6-declarative-dev qt6-tools-dev qml6-module-qttest \
-            libkf6config-dev libkf6i18n-dev libkf6kcmutils-dev libkf6coreaddons-dev \
-            gettext
+          zypper --non-interactive install \
+            git cmake kf6-extra-cmake-modules kf6-ki18n-devel kf6-kconfig-devel \
+            kf6-kcmutils-devel qt6-quick-devel qt6-test-devel qt6-quicktest-devel \
+            gettext-tools ShellCheck
+
+      - uses: actions/checkout@v4
 
       - name: Configure
         run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
@@ -31,13 +26,13 @@ jobs:
 
       - name: Test (ctest — includes metadata validation)
         run: ctest --test-dir build --output-on-failure
+        env:
+          # No real display in CI — Qt Quick Test needs a QPA platform that
+          # doesn't need one, otherwise tst_plasmoid aborts.
+          QT_QPA_PLATFORM: offscreen
 
       - name: shellcheck rename.sh
-        run: |
-          sudo apt-get install -y shellcheck
-          shellcheck rename.sh
+        run: shellcheck rename.sh
 
       - name: qmllint
-        run: |
-          QMLLINT="$(command -v qmllint6 || command -v qmllint)"
-          find package/contents -name '*.qml' -print0 | xargs -0 "$QMLLINT"
+        run: find package/contents -name '*.qml' -print0 | xargs -0 qmllint6

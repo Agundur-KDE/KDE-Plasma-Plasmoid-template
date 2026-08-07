@@ -85,7 +85,6 @@ PYEOF
 # Rename .po files — filename pattern must stay plasma_applet_<plugin-id>.po
 find translate -name "plasma_applet_${OLD_DOMAIN}.po" | while read -r po; do
     dir=$(dirname "$po")
-    lang=$(basename "$dir")
     new_po="${dir}/plasma_applet_${NEW_DOMAIN}.po"
     mv "$po" "$new_po"
     # fix Project-Id-Version header (use fixed-string replacement, not regex)
