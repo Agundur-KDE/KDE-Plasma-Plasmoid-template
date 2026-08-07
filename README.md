@@ -23,9 +23,9 @@ A clean, minimal starting point for a **KDE Plasma 6 Plasmoid** — pure QML, no
 |---|---|
 | Compact + Full representation | Panel icon expands to full popup |
 | Config dialog | `configGeneral.qml` with KCM.SimpleKCM + `main.xml` for persistent settings |
-| i18n | `translate/` with `.po` files for de, en, es, fr — `ki18n_install` wired up |
+| i18n | `translate/` with `.po` files for de, es, fr (English is the source language, needs no `.po`) — `ki18n_install` wired up, `Messages.sh` extracts strings |
 | Qt Quick Test | `tests/tst_plasmoid.qml` — run with `ctest` |
-| Clean CMake | Only what's needed: ECM, KF6 Config/I18n/KCMUtils, Qt6 Quick/Test |
+| Clean CMake | Only what's needed: ECM, KF6 Config/I18n/KCMUtils, Qt6 Quick/Test/QuickTest |
 
 ## Requirements
 
@@ -36,8 +36,8 @@ A clean, minimal starting point for a **KDE Plasma 6 Plasmoid** — pure QML, no
 
 On openSUSE Tumbleweed:
 ```bash
-sudo zypper install cmake extra-cmake-modules kf6-ki18n-devel kf6-kconfigwidgets-devel \
-     kf6-kcmutils-devel qt6-quick-devel qt6-test-devel
+sudo zypper install cmake kf6-extra-cmake-modules kf6-ki18n-devel kf6-kconfig-devel \
+     kf6-kcmutils-devel qt6-quick-devel qt6-test-devel qt6-quicktest-devel
 ```
 
 On Arch / KDE neon / Ubuntu with KDE PPA — install the equivalent `*-dev` packages.
@@ -78,6 +78,19 @@ bash rename.sh
 
 It replaces all occurrences of `de.agundur.myplasmoid` / `myplasmoid` / `KDE-Template`,
 renames the `.po` translation files, and updates `metadata.json` (name, description, author, URLs).
+
+## Translations
+
+After adding or changing an `i18n()`/`i18nc()` call in the QML, run:
+
+```bash
+./Messages.sh
+```
+
+This extracts every translatable string into `translate/template.pot` and merges it
+into each existing `translate/<lang>/*.po` (adds new strings, keeps existing
+translations and each file's header). Translators then fill in the empty `msgstr`
+entries in the `.po` files.
 
 ## Quick iteration without installing (for development)
 
