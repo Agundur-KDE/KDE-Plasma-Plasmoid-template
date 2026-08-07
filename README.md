@@ -112,7 +112,7 @@ placement or system icon-theme resolution.
 1. **Rename** — find/replace `de.agundur.myplasmoid` and `myplasmoid` in `CMakeLists.txt` and `package/metadata.json`
 2. **UI** — edit `fullRepresentation`/`compactRepresentation` in `package/contents/ui/main.qml` for the popup content. Keep them inline there rather than splitting into separate files — QML ids (like `root`) aren't visible across files, so a separate file can't reach back into `main.qml`'s state.
 3. **Settings** — add entries to `package/contents/config/main.xml` and a matching field in `configGeneral.qml`
-4. **C++ plugin** — optional, disabled by default. Uncomment `add_subdirectory(plugin)` in `package/CMakeLists.txt` if you need a C++-backed QML type; `package/plugin/FileReader.*` is a working example to start from
+4. **C++ plugin** — optional, disabled by default. Uncomment `add_subdirectory(plugin)` in `package/CMakeLists.txt` if you need a C++-backed QML type; `package/plugin/FileReader.*` is a working example to start from. It's intentionally simple: it opens whatever path its `path` property is set to. Fine for a config-driven path you control — don't wire it up to untrusted/user-supplied input without adding your own validation.
 
 ## Contributing
 

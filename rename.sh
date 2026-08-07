@@ -27,10 +27,17 @@ if [[ ! "$NEW_ID" =~ ^[a-z][a-z0-9-]*$ ]]; then
     exit 1
 fi
 
+if [[ ! "$GITHUB_ORG" =~ ^[A-Za-z0-9_.-]+$ ]]; then
+    echo "ERROR: GitHub user/org must not contain spaces or slashes." >&2
+    exit 1
+fi
+
 NEW_DOMAIN="de.agundur.${NEW_ID}"
 NEW_PLUGIN="${NEW_ID}plugin"
 OLD_PLUGIN="${OLD_ID}plugin"
-GITHUB_URL="https://github.com/${GITHUB_ORG}/${NEW_NAME// /-}"
+# Repo name is the project ID, not the (possibly multi-word) display name —
+# GitHub repo names are conventionally the slug you'll actually `git clone`.
+GITHUB_URL="https://github.com/${GITHUB_ORG}/${NEW_ID}"
 
 echo "Will rename:"
 echo "  ID:     $OLD_DOMAIN  →  $NEW_DOMAIN"
