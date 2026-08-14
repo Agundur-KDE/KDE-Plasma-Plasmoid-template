@@ -1,0 +1,27 @@
+name: Build CI image
+
+on:
+  push:
+    paths: [Dockerfile]
+  schedule:
+    - cron: '0 3 * * 1'  # weekly, catches Tumbleweed drift/CVEs
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-24.04
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/agundur-kde/plasmoid-ci:latest
