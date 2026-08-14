@@ -10,9 +10,6 @@
   <a href="https://paypal.me/agundur">
     <img src="https://img.shields.io/badge/donate-PayPal-%2337a556" alt="PayPal">
   </a>
-  <a href="https://liberapay.com/Agundur/donate">
-    <img src="https://liberapay.com/assets/widgets/donate.svg" alt="Donate using Liberapay">
-  </a>
 </div>
 
 ## What's included
