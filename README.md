@@ -39,6 +39,16 @@ sudo zypper install cmake kf6-extra-cmake-modules kf6-ki18n-devel kf6-kconfig-de
 
 On Arch / KDE neon / Ubuntu with KDE PPA — install the equivalent `*-dev` packages.
 
+**Not on Tumbleweed and just want to build/test without installing all of the
+above?** The CI container has everything preinstalled:
+
+```bash
+docker run --rm -it -v "$PWD":/src -w /src ghcr.io/agundur-kde/plasmoid-ci:latest bash
+```
+
+Only useful for the CMake/`ctest`/`qmllint` build-and-test path — for pure QML
+iteration you don't need this or the packages above, see "Quick iteration" below.
+
 ## Build
 
 ```bash
