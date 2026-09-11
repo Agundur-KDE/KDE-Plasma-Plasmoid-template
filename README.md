@@ -24,6 +24,12 @@ A clean, minimal starting point for a **KDE Plasma 6 Plasmoid** — pure QML, no
 | Qt Quick Test | `tests/tst_plasmoid.qml` — run with `ctest` |
 | Clean CMake | Only what's needed: ECM, KF6 Config/I18n/KCMUtils, Qt6 Quick/Test/QuickTest |
 
+## Video tutorial
+
+[Build Your First KDE Plasma 6 Widget — From Clone to Desktop](https://www.youtube.com/watch?v=4M_oHcemgsI)
+
+A complete walkthrough from cloning this template to a working Plasma widget.
+
 ## Requirements
 
 - Qt ≥ 6.7
