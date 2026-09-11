@@ -26,7 +26,7 @@ A clean, minimal starting point for a **KDE Plasma 6 Plasmoid** — pure QML, no
 
 ## Video tutorial
 
-[Build Your First KDE Plasma 6 Widget — From Clone to Desktop](https://www.youtube.com/watch?v=4M_oHcemgsI)
+[![Build Your First KDE Plasma 6 Widget — From Clone to Desktop](docs/media/plasmoid_howto.png)](https://www.youtube.com/watch?v=4M_oHcemgsI)
 
 A complete walkthrough from cloning this template to a working Plasma widget.
 
