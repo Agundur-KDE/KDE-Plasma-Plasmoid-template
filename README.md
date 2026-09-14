@@ -16,6 +16,8 @@
 
 A clean, minimal starting point for a **KDE Plasma 6 Plasmoid** — pure QML, no boilerplate:
 
+If this template helps you build a KDE Plasma widget, [support its continued maintenance through GitHub Sponsors](https://github.com/sponsors/Agundur-KDE).
+
 | Feature | Details |
 |---|---|
 | Compact + Full representation | Panel icon expands to full popup |
