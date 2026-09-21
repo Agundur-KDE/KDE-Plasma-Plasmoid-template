@@ -28,7 +28,7 @@ If this template helps you build a KDE Plasma widget, [support its continued mai
 
 ## Video tutorial
 
-[![Build Your First KDE Plasma 6 Widget — From Clone to Desktop](docs/media/plasmoid_howto.png)](https://www.youtube.com/watch?v=4M_oHcemgsI)
+[![Build Your First KDE Plasma 6 Widget — From Clone to Desktop](docs/media/plasmoid_howto.png)](https://www.youtube.com/watch?v=DsxmLgVS0FI)
 
 A complete walkthrough from cloning this template to a working Plasma widget.
 
